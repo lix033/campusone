@@ -1,0 +1,19 @@
+{
+  "name": "campus-one",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n web,backoffice -c blue,magenta \"npm run dev -w @campus-one/web\" \"npm run dev -w @campus-one/backoffice\"",
+    "dev:web": "npm run dev -w @campus-one/web",
+    "dev:backoffice": "npm run dev -w @campus-one/backoffice",
+    "build": "npm run build -w @campus-one/web -w @campus-one/backoffice",
+    "start": "concurrently -n web,backoffice -c blue,magenta \"npm run start -w @campus-one/web\" \"npm run start -w @campus-one/backoffice\"",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.4"
+  }
+}
