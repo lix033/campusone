@@ -1,9 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Inter, Inter_Tight } from "next/font/google";
 import { ToastProvider } from "@/components/ui";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta", display: "swap" });
+// Inter pour le texte courant, Inter Tight pour les titres : une famille unique,
+// deux largeurs — le registre institutionnel attendu sur un site d'orientation.
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+const interTight = Inter_Tight({ subsets: ["latin"], variable: "--font-inter-tight", display: "swap" });
 
 export const metadata: Metadata = {
   title: {
@@ -18,7 +21,7 @@ export const viewport: Viewport = { themeColor: "#15264f" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={jakarta.variable}>
+    <html lang="fr" className={`${inter.variable} ${interTight.variable}`}>
       <body>
         <ToastProvider>{children}</ToastProvider>
       </body>

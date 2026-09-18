@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { ArrowRight, MapPin, Pause, Play, Sparkles } from "lucide-react";
+import { ArrowRight, MapPin, Pause, Play } from "lucide-react";
 import { Avatar, buttonClasses } from "@/components/ui";
 
 const slides = [
@@ -13,6 +13,29 @@ const slides = [
 ];
 
 const DURATION = 7000;
+
+/**
+ * Ligne frontière : un tracé pointillé, comme une frontière sur une carte, se dessine
+ * sous le mot puis s'efface — la frontière ne tient pas.
+ */
+function BorderLine({ reduce }: { reduce: boolean }) {
+  const dashes = "repeating-linear-gradient(90deg, currentColor 0 9px, transparent 9px 17px)";
+
+  if (reduce) {
+    return <span aria-hidden className="absolute inset-x-0 -bottom-[0.08em] h-[0.06em] rounded-full opacity-70" style={{ backgroundImage: dashes }} />;
+  }
+
+  return (
+    <motion.span
+      aria-hidden
+      className="absolute inset-x-0 -bottom-[0.08em] h-[0.06em] rounded-full"
+      style={{ backgroundImage: dashes }}
+      initial={{ clipPath: "inset(0 100% 0 0)" }}
+      animate={{ clipPath: ["inset(0 100% 0 0)", "inset(0 0% 0 0)", "inset(0 0% 0 0)", "inset(0 0% 0 100%)"] }}
+      transition={{ duration: 5.4, times: [0, 0.28, 0.7, 1], ease: [0.22, 1, 0.36, 1], repeat: Infinity, repeatDelay: 0.6 }}
+    />
+  );
+}
 
 export function Hero() {
   const ref = React.useRef<HTMLElement>(null);
@@ -55,11 +78,15 @@ export function Hero() {
       <motion.div style={{ y: textY, opacity: fade }} className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
           <span className="inline-flex animate-fade-up items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
-            <Sparkles className="size-3.5 text-brand-300" aria-hidden />
+            <span className="size-1.5 rounded-full bg-brand-300" aria-hidden />
             Candidatures ouvertes · Rentrée 2027
           </span>
-          <h1 className="mt-6 animate-fade-up text-4xl font-extrabold tracking-tight text-balance text-white [animation-delay:80ms] sm:text-5xl lg:text-6xl">
-            Votre avenir n'a pas <span className="text-brand-300">de frontières.</span>
+          <h1 className="mt-6 animate-fade-up text-4xl font-bold text-balance text-white [animation-delay:80ms] sm:text-5xl lg:text-6xl">
+            Votre avenir n'a pas{" "}
+            <span className="relative inline-block whitespace-nowrap text-brand-300">
+              de frontières.
+              <BorderLine reduce={!!reduce} />
+            </span>
           </h1>
           <p className="mt-6 max-w-xl animate-fade-up text-lg leading-relaxed text-navy-100 [animation-delay:160ms]">
             Construisez votre projet d'études à l'international avec Campus One. Un seul interlocuteur, de l'orientation jusqu'à votre installation en France.
